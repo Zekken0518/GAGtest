@@ -12,11 +12,11 @@ screenGui.Parent = lplr:WaitForChild("PlayerGui")
 local toggleButton = Instance.new("ImageButton")
 toggleButton.Size = UDim2.new(0, 60, 0, 60)
 toggleButton.Position = UDim2.new(0, 20, 0, 20)
-toggleButton.Image = "rbxassetid://6031091002" -- replace with your icon
+toggleButton.Image = "rbxassetid://6031091002"
 toggleButton.BackgroundTransparency = 1
 toggleButton.Parent = screenGui
 
--- Create Panel (Frame)
+-- Create Panel
 local panel = Instance.new("Frame")
 panel.Size = UDim2.new(0, 300, 0, 250)
 panel.Position = UDim2.new(0.5, -150, 0.5, -125)
@@ -100,22 +100,19 @@ local function updateSpeed(posX)
 end
 
 sliderKnob.InputBegan:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1
-    or input.UserInputType == Enum.UserInputType.Touch then
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
         dragging = true
     end
 end)
 
 UserInputService.InputEnded:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1
-    or input.UserInputType == Enum.UserInputType.Touch then
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
         dragging = false
     end
 end)
 
 UserInputService.InputChanged:Connect(function(input)
-    if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement
-        or input.UserInputType == Enum.UserInputType.Touch) then
+    if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
         updateSpeed(input.Position.X)
     end
 end)
@@ -144,11 +141,20 @@ enableGearButton.MouseButton1Click:Connect(function()
     enableGearButton.Text = gearButtonEnabled and "Enable Gear Teleport Button (ON)" or "Enable Gear Teleport Button (OFF)"
 
     if gearButtonEnabled then
-        -- Create Gear Button near Seeds button
         if not gearButton then
             gearButton = Instance.new("TextButton")
             gearButton.Size = UDim2.new(0, 120, 0, 50)
-            gearButton.Position = UDim2.new(0, 200, 1, -70) -- adjust position as needed
+
+            -- Find the seed button
+            local seedButton = screenGui:FindFirstChild("Seed") or screenGui:FindFirstChild("SeedButton") -- adjust if needed
+            if seedButton and seedButton:IsA("GuiObject") then
+                gearButton.Position = UDim2.new(seedButton.Position.X.Scale, seedButton.Position.X.Offset + seedButton.Size.X.Offset + 10, 0, seedButton.Position.Y.Offset)
+            else
+                -- fallback position (top left)
+                gearButton.Position = UDim2.new(0, 150, 0, 10)
+            end
+
+            gearButton.AnchorPoint = Vector2.new(0, 0)
             gearButton.Text = "Gear"
             gearButton.BackgroundColor3 = Color3.fromRGB(30, 150, 250)
             gearButton.TextColor3 = Color3.new(1, 1, 1)
@@ -158,7 +164,7 @@ enableGearButton.MouseButton1Click:Connect(function()
 
             gearButton.MouseButton1Click:Connect(function()
                 -- teleport the player to gear shop
-                local gearShopPosition = Vector3.new(100, 5, -200) -- <<<<< replace with your real coordinates!
+                local gearShopPosition = Vector3.new(100, 5, -200) -- <<<<< replace with your real coordinates
                 if lplr.Character and lplr.Character:FindFirstChild("HumanoidRootPart") then
                     lplr.Character.HumanoidRootPart.CFrame = CFrame.new(gearShopPosition)
                 end
