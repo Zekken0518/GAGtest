@@ -125,7 +125,7 @@ end)
 -- Gear teleport toggle logic
 local enableGearButton = Instance.new("TextButton")
 enableGearButton.Size = UDim2.new(1, -40, 0, 40)
-enableGearButton.Position = UDim2.new(0, 20, 0, 140)
+enableGearButton.Position = UDim2.new(0, 20, 0, 100)
 enableGearButton.Text = "Enable Gear Teleport Button (OFF)"
 enableGearButton.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
 enableGearButton.TextColor3 = Color3.new(1,1,1)
