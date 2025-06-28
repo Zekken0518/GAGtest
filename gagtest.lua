@@ -134,7 +134,7 @@ enableGearButton.TextScaled = true
 enableGearButton.Parent = panel
 
 local gearButtonEnabled = false
-local gearButton -- store reference
+local gearButton
 
 enableGearButton.MouseButton1Click:Connect(function()
     gearButtonEnabled = not gearButtonEnabled
@@ -143,15 +143,16 @@ enableGearButton.MouseButton1Click:Connect(function()
     if gearButtonEnabled then
         if not gearButton then
             gearButton = Instance.new("TextButton")
-            gearButton.Size = UDim2.new(0, 120, 0, 50)
+            gearButton.Size = UDim2.new(0, 80, 0, 40) -- Smaller size
 
-            -- Find the seed button
-            local seedButton = screenGui:FindFirstChild("Seed") or screenGui:FindFirstChild("SeedButton") -- adjust if needed
+            local seedButton = screenGui:FindFirstChild("Seed") or screenGui:FindFirstChild("SeedButton")
             if seedButton and seedButton:IsA("GuiObject") then
-                gearButton.Position = UDim2.new(seedButton.Position.X.Scale, seedButton.Position.X.Offset + seedButton.Size.X.Offset + 10, 0, seedButton.Position.Y.Offset)
+                local sx, sxo = seedButton.Position.X.Scale, seedButton.Position.X.Offset
+                local syo = seedButton.Position.Y.Offset
+                local sw = seedButton.Size.X.Offset
+                gearButton.Position = UDim2.new(sx, sxo + sw + 8, 0, syo) -- 8px to the right
             else
-                -- fallback position (top left)
-                gearButton.Position = UDim2.new(0, 150, 0, 10)
+                gearButton.Position = UDim2.new(0, 200, 0, 10) -- fallback
             end
 
             gearButton.AnchorPoint = Vector2.new(0, 0)
@@ -163,8 +164,8 @@ enableGearButton.MouseButton1Click:Connect(function()
             gearButton.Parent = screenGui
 
             gearButton.MouseButton1Click:Connect(function()
-                -- teleport the player to gear shop
-                local gearShopPosition = Vector3.new(100, 5, -200) -- <<<<< replace with your real coordinates
+                -- Approximate Gear Shop coordinates
+                local gearShopPosition = Vector3.new(150, 4, -150)
                 if lplr.Character and lplr.Character:FindFirstChild("HumanoidRootPart") then
                     lplr.Character.HumanoidRootPart.CFrame = CFrame.new(gearShopPosition)
                 end
